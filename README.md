@@ -1,11 +1,9 @@
 # 📘 README - Midterm Final Checklist (URL Shortener Project)
 
-This README **must remain in your repository** and **must be fully completed** before submitting the midterm.
 
 ---
 
 ## ۱. API Test Coverage Table
-Fill in the second column with the **Mohamad Hosein Samadi and Abolfazl Shahsavand** who implemented and tested each API.
 
 | # | API Endpoint / Feature | Implemented & Tested By (Student Name) |
 |---|------------------------|----------------------------------------|
@@ -18,8 +16,8 @@ Fill in the second column with the **Mohamad Hosein Samadi and Abolfazl Shahsava
 ## ۲. Code Generation Method (Section 6.4)
 Check the method you used to generate the short code:
 
-- [ ] **۱. Random Generation**
-- [x] **۲. ID → Base62 Conversion**
+- [x] **۱. Random Generation**
+- [ ] **۲. ID → Base62 Conversion**
 - [ ] **۳. Hash-based Generation**
 (Only select the one you actually implemented.)
 ---
@@ -74,15 +72,7 @@ For each route, two screenshots have been added:
 - ![img_5.png](img_5.png)
 - ![img_6.png](img_6.png)
 
-Screenshots are located in:
-/postman
 
 
-### Naming Example:
-Filenames must clearly show: Route, HTTP status, and Success or error.
-
-postman/ post-links-201-success.png post-links-400-invalid-url.png get-code-307-redirect.png get-code-400-not-found-or-expired.png get-links-200-success.png delete-code-200-success.png delete-code-400-not-found.png
 
 
----
-**✔️ Make sure this README is fully completed before submission.**
