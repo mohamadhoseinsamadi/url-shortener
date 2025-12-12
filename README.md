@@ -78,8 +78,6 @@ Screenshots are located in:
 /postman
 
 
-### Naming Example:
-Filenames must clearly show: Route, HTTP status, and Success or error.
 
 postman/ post-links-201-success.png post-links-400-invalid-url.png get-code-307-redirect.png get-code-400-not-found-or-expired.png get-links-200-success.png delete-code-200-success.png delete-code-400-not-found.png
 
