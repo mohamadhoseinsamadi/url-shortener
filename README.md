@@ -1,78 +1,57 @@
-# 📘 README - Midterm Final Checklist (URL Shortener Project)
+# URL Shortener
 
+A URL shortening REST API built with **FastAPI** and **PostgreSQL**, developed as a team midterm project. Supports creating short links, redirection, listing, deletion, and a bonus **TTL (expiration)** feature.
 
----
+## API
 
-## ۱. API Test Coverage Table
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/links` | Create a short link |
+| GET | `/{code}` | Redirect to the original URL |
+| GET | `/links` | List all shortened links |
+| DELETE | `/links/{code}` | Delete a short link |
+| POST | `/admin/cleanup` | Remove expired links (TTL cleanup) |
 
-| # | API Endpoint / Feature | Implemented & Tested By (Student Name) |
-|---|------------------------|----------------------------------------|
-| ۱ | Create Short Link - **POST /links** | Abolfazl                               |
-| ۲ | Redirect to Original URL - **GET /{code}** | Mohamad Josein                         |
-| ۳ | Get All Shortened Links - **GET /links** | Abolfazl                               |
-| ۴ | Delete Short Link - **DELETE /links/{code}** | Mohamad Hosein                         |
----
+Validation errors are returned as `400` with a standardized JSON body (`status`, `message`, `data`). Interactive docs are available at `/docs`.
 
-## ۲. Code Generation Method (Section 6.4)
-Check the method you used to generate the short code:
+## Tech Stack
 
-- [x] **۱. Random Generation**
-- [ ] **۲. ID → Base62 Conversion**
-- [ ] **۳. Hash-based Generation**
-(Only select the one you actually implemented.)
----
+- Python 3.12, FastAPI, Uvicorn
+- SQLAlchemy + Alembic (migrations)
+- PostgreSQL (psycopg2)
+- Poetry for dependency management
 
-## ۳. Bonus User Story: TTL (Expiration Time) for Shortened Links)
-If you implemented the bonus user story, mark the box and complete the required details.
+## Setup & Run
 
-- [x] **TTL Feature Implemented**
+```bash
+poetry install
+cp .env.example .env        # set DB_PASSWORD and connection details
+poetry run alembic upgrade head
+poetry run uvicorn app.main:app --reload
+```
 
-**If checked, fill in the following information:**
+The API is served at http://127.0.0.1:8000.
 
-- **ENV variable or config key used:**
-  `LINK_TTL_SECONDS=400`
-  *(This key exists in `.env.example` with a sample value.)*
+## TTL (Expiration)
 
-- **Location of TTL Logic (File + Function):**
-  Specify the exact location where TTL expiration is checked and expired links are detected/removed.
+- `LINK_TTL_SECONDS` in `.env` controls link lifetime.
+- Expiry is checked on redirect (`app/services/service.py → get_original_url()`).
+- Expired links are removed by `POST /admin/cleanup` (`cleanup_expired_links()`), designed to be triggered by an external scheduler (e.g. a cron job).
 
-  **TTL Check (Read/Redirect):** `app/services/service.py` → `get_original_url()`
-  
-  **TTL Cleanup (Write/Delete):** `app/services/service.py` → `cleanup_expired_links()`
+## Project Structure
 
-- **How TTL cleanup is triggered:**
-  You must write a Command that removes expired links (created_at + TTL < now()).
-  
-  Here, write:
+```
+app/
+  controller/   # API routes
+  services/     # Business logic (short code generation, TTL)
+  repository/   # Data access
+  model/        # SQLAlchemy models
+  schemas/      # Pydantic schemas
+  database/     # Engine and session setup
+alembic/        # Database migrations
+docs/           # Course submission checklist and Postman screenshots
+```
 
-  | Field | Detail |
-  | :--- | :--- |
-  | Full file path of the command | `app/controller/controller.py` |
-  | Command name / execution method | `POST /admin/cleanup` (API Endpoint) |
-  | Scheduler details | Cleanup is triggered by an external scheduler (e.g., system **Cron Job** or a dedicated cloud service) sending a **scheduled POST request** to the `/admin/cleanup` endpoint. |
+## Course Documentation
 
----
-
-## ۴. Postman Collection (Required)
-A **Postman Collection** has been created and includes all four API routes:
-
-- **POST /links**
-- **GET /{code}**
-- **GET /links**
-- **DELETE /links/{code}**
-
-### Screenshots (included in GitHub)
-For each route, two screenshots have been added:
-- Successful response 
-- ![img_1.png](img_1.png)
-- ![img_2.png](img_2.png)
-- ![img_3.png](img_3.png)
-- ![img_4.png](img_4.png)
-- Error-handled response 
-- ![img_5.png](img_5.png)
-- ![img_6.png](img_6.png)
-
-
-
-
-
+The original midterm submission checklist (test coverage, TTL details, Postman screenshots) is kept in [docs/course-checklist.md](docs/course-checklist.md).
